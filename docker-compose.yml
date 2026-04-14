@@ -1,0 +1,36 @@
+services:
+
+  # ── Flask Application ─────────────────────────────────────────────
+  app:
+    build: .
+    container_name: quicknotes_app
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env                        # Single source of truth for DB creds
+    depends_on:
+      mysql:
+        condition: service_healthy  # Wait until MySQL is ready
+    restart: on-failure
+
+  # ── MySQL Database ────────────────────────────────────────────────
+  mysql:
+    image: mysql:8.0
+    container_name: quicknotes_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: quicknotes_db  # Must match MYSQL_DB in .env
+      MYSQL_USER: notesuser          # Must match MYSQL_USER in .env
+      MYSQL_PASSWORD: notespass      # Must match MYSQL_PASSWORD in .env
+    volumes:
+      - quicknotes_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-unotesuser", "-pnotespass"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+
+volumes:
+  quicknotes_mysql_data:
+    driver: local
