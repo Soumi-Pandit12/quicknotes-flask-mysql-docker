@@ -67,7 +67,7 @@ quicknotes/
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/<your-username>/quicknotes-flask-mysql-docker.git
+git clone https://github.com/Soumi-Pandit12/quicknotes-flask-mysql-docker
 cd quicknotes-flask-mysql-docker
 ```
 
@@ -96,7 +96,7 @@ docker-compose up -d --build
 Open your browser and go to:
 
 ```text
-http://localhost:5001
+http://localhost:5000
 ```
 
 ---
@@ -121,7 +121,7 @@ After starting the application, follow these steps to verify everything is worki
 Open your browser and go to:
 
 ```text
-http://localhost:5001
+http://localhost:5000
 ```
 
 * The QuickNotes UI should load successfully
@@ -237,7 +237,7 @@ docker run -d \
 Open your browser:
 
 ```text
-http://localhost:5001
+http://localhost:5000
 ```
 
 ---
