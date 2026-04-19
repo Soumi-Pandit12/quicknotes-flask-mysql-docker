@@ -98,5 +98,5 @@ def delete_note(note_id):
 # ── Entry Point ────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    init_db()
+    # init_db()   # ❌ disable for now
     app.run(host="0.0.0.0", port=5000, debug=False)
