@@ -7,18 +7,17 @@ services:
     container_name: quicknotes_app
     ports:
       - "5000:5000"
-    depends_on:
-      mysql:
-        condition: service_healthy
     environment:
       MYSQL_HOST: mysql
       MYSQL_USER: notesuser
       MYSQL_PASSWORD: notespass
       MYSQL_DB: quicknotes_db
-    restart: on-failure
+    depends_on:
+      - mysql
+    restart: always
 
   mysql:
-    image: mysql:8.0
+    image: mysql:5.7
     container_name: quicknotes_mysql
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
@@ -29,13 +28,7 @@ services:
       - "3306:3306"
     volumes:
       - quicknotes_mysql_data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-unotesuser", "-pnotespass"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 40s
+    restart: always
 
 volumes:
   quicknotes_mysql_data:
-    driver: local
