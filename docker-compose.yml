@@ -3,7 +3,7 @@ version: '3.8'
 services:
 
   app:
-    image: soumipandit/quicknotes-flask-mysql-docker:latest
+    build: .
     container_name: quicknotes_app
     ports:
       - "5000:5000"
