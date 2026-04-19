@@ -1,9 +1,9 @@
-version: '3.8'
-
 services:
 
   app:
     image: soumipandit/quicknotes-flask-mysql-docker:latest
+    pull_policy: always
+    container_name: quicknotes_app
     ports:
       - "5000:5000"
     env_file:
@@ -15,6 +15,7 @@ services:
 
   mysql:
     image: mysql:8.0
+    container_name: quicknotes_mysql
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: quicknotes_db
@@ -31,3 +32,4 @@ services:
 
 volumes:
   quicknotes_mysql_data:
+    driver: local
