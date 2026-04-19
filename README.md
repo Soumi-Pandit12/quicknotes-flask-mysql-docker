@@ -2,7 +2,7 @@
 
 ## 📌 Overview
 
-QuickNotes is a lightweight web application designed to store and manage personal notes efficiently.
+QuickNotes is a lightweight web application designed to store and manage personal notes efficiently.  
 It is built using Flask for the backend and MySQL for persistent data storage, and fully containerized using Docker.
 
 The project demonstrates a real-world two-tier architecture where application and database services run in isolated containers.
@@ -11,10 +11,10 @@ The project demonstrates a real-world two-tier architecture where application an
 
 ## 🛠 Tech Stack
 
-* **Backend:** Flask (Python)
-* **Database:** MySQL 8
-* **Frontend:** HTML + CSS (custom UI)
-* **Containerization:** Docker & Docker Compose
+- **Backend:** Flask (Python)  
+- **Database:** MySQL 8  
+- **Frontend:** HTML + CSS (custom UI)  
+- **Containerization:** Docker & Docker Compose  
 
 ---
 
@@ -22,22 +22,22 @@ The project demonstrates a real-world two-tier architecture where application an
 
 This project follows a **two-tier architecture**:
 
-* The Flask application runs in one container
-* The MySQL database runs in a separate container
-* Docker Compose orchestrates both services
-* Internal communication happens using Docker networking (service name-based connection)
-* Environment variables are used for secure configuration
+- Flask application runs in one container  
+- MySQL database runs in a separate container  
+- Docker Compose orchestrates both services  
+- Internal communication via Docker networking  
+- Environment variables used for configuration  
 
 ---
 
-⚙️ Prerequisites
+## ⚙️ Prerequisites
 
-Before running this project, make sure you have the following installed on your system:
+Make sure you have:
 
-Docker – required to build and run containers
-Docker Compose – used to manage multi-container setup
-Git – to clone the repository
-Code Editor (optional) – such as VS Code for development and modification
+- Docker  
+- Docker Compose  
+- Git  
+- Code Editor (optional, e.g., VS Code)  
 
 ---
 
@@ -62,7 +62,7 @@ quicknotes/
 
 ---
 
-## 📂 Project Setup
+## 🚀 Project Setup
 
 ### 1. Clone Repository
 
@@ -79,8 +79,6 @@ cd quicknotes-flask-mysql-docker
 cp .env.example .env
 ```
 
-Edit the `.env` file if you want to customize database credentials or configuration.
-
 ---
 
 ### 3. Run Application
@@ -93,108 +91,61 @@ docker-compose up -d --build
 
 ### 4. Access Application
 
-Open your browser and go to:
-
-```text
+```
 http://localhost:5000
 ```
 
 ---
 
-### 5. Stop Application (Optional)
+### 5. Stop Application
 
 ```bash
 docker-compose down
 ```
 
-
 ---
 
 ## ✅ Verification
 
-After starting the application, follow these steps to verify everything is working correctly:
+### 🌐 Check Application
+- Open browser → http://localhost:5000  
+- Add & delete notes  
 
----
-
-### 🌐 1. Check Application
-
-Open your browser and go to:
-
-```text
-http://localhost:5000
-```
-
-* The QuickNotes UI should load successfully
-* Try adding a note → it should appear instantly
-* Delete a note → it should be removed from the list
-
----
-
-### 📦 2. Verify Running Containers
-
-Run the following command:
-
+### 📦 Check Containers
 ```bash
 docker ps
 ```
 
-You should see two containers running:
-
-* `quicknotes_app`
-* `quicknotes_mysql`
+Expected:
+- quicknotes_app  
+- quicknotes_mysql  
 
 ---
 
-### 🗄️ 3. Verify Database Data
-
-Access MySQL container:
+### 🗄️ Check Database
 
 ```bash
 docker exec -it quicknotes_mysql mysql -u root -p
 ```
-
-Then run:
 
 ```sql
 USE quicknotes_db;
 SELECT * FROM notes;
 ```
 
-* Notes added from UI should appear in the database
-
 ---
 
-### 📜 4. Check Logs (Optional)
-
-To view live logs:
+### 📜 Logs
 
 ```bash
 docker-compose logs -f
 ```
 
-* Ensure there are no connection errors
-* Flask app should be running without crashes
-
 ---
-
-### 🧠 Expected Result
-
-* Application loads on browser
-* Notes can be added and deleted
-* Data is stored in MySQL
-* Containers run without errors
-
----
-
 
 ## ⚙️ Run Without Docker Compose
 
-You can also run the application manually using individual Docker commands instead of Docker Compose.
-
----
-
-### 🗄️ 1. Create MySQL Container
-
+### MySQL Container
 ```bash
 docker run -d \
   --name quicknotes_mysql \
@@ -206,18 +157,12 @@ docker run -d \
   mysql:8
 ```
 
----
-
-### 🌐 2. Build Flask Application Image
-
+### Build App
 ```bash
 docker build -t quicknotes_app .
 ```
 
----
-
-### 🚀 3. Run Flask Container
-
+### Run App
 ```bash
 docker run -d \
   --name quicknotes_app \
@@ -232,43 +177,134 @@ docker run -d \
 
 ---
 
-### 🌍 4. Access Application
+## 🧠 Key Learnings
 
-Open your browser:
+- Multi-container Docker setup  
+- Container networking  
+- Persistent storage with volumes  
+- Debugging DB connection issues  
 
-```text
-http://localhost:5000
+
+---
+
+# 🚀 CI/CD Pipeline with Jenkins
+
+This project is extended with a fully automated **CI/CD pipeline using Jenkins**.
+
+---
+
+## 🔄 Workflow
+
+```
+GitHub → Jenkins → Docker Compose → AWS EC2 → Live App
 ```
 
 ---
 
-### ⚠️ Notes
+## ⚙️ Jenkins Setup
 
-* Ensure the MySQL container is fully started before running the Flask container
-* The `--link` option is used for basic container communication (Docker Compose is recommended for production)
-* Data will persist using the Docker volume `mysql_data`
+### 1. Launch Jenkins on EC2
 
-
-
-## 🧠 Key Learnings
-
-* Building and containerizing a full-stack application
-* Managing multi-container environments with Docker Compose
-* Handling environment variables using `.env` files
-* Debugging database connection issues in Docker
-* Understanding container networking and service communication
-* Implementing persistent storage using Docker volumes
-
+```
+http://<EC2-IP>:8080
+```
 
 ---
 
-## 💡 Future Enhancements
+### 2. Install Dependencies
 
-* Implement user authentication (login/signup)
-* Add edit/update note functionality
-* Improve UI responsiveness and styling
-* Add REST API support
-* Integrate CI/CD pipeline for automated deployment
+```bash
+sudo apt update
+sudo apt install docker.io -y
+sudo apt install docker-compose -y
+sudo usermod -aG docker jenkins
+sudo systemctl restart jenkins
+```
+
+---
+
+### 3. Install Plugins
+
+- Pipeline  
+- Git  
+- Docker Pipeline  
+
+---
+
+### 4. Create Pipeline Job
+
+- Pipeline script from SCM  
+- Git repo: your repo  
+- Branch: main  
+- Script: Jenkinsfile  
+
+---
+
+### 5. Jenkinsfile
+
+```groovy
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Clone Code') {
+            steps {
+                git url: 'https://github.com/Soumi-Pandit12/quicknotes-flask-mysql-docker.git', branch: 'main'
+            }
+        }
+
+        stage('Stop Containers') {
+            steps {
+                sh 'docker-compose down || true'
+            }
+        }
+
+        stage('Build & Deploy') {
+            steps {
+                sh 'docker-compose up -d --build'
+            }
+        }
+    }
+}
+```
+
+---
+
+### 6. Enable Auto Trigger
+
+GitHub → Settings → Webhooks:
+
+```
+http://<EC2-IP>:8080/github-webhook/
+```
+
+---
+
+## ⚡ CI/CD Features
+
+- Auto deployment on every push  
+- Real-time updates  
+- No manual intervention  
+- Full automation  
+
+---
+
+## 🧪 CI/CD Test
+
+1. Change code  
+2. Push to GitHub  
+3. Jenkins triggers automatically  
+4. App updates live  
+
+---
+
+## 🧠 CI/CD Learnings
+
+- Jenkins automation  
+- Webhook integration  
+- Deployment debugging  
+- Real DevOps workflow  
 
 ---
 
