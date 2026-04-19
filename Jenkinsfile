@@ -9,21 +9,15 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Stop Old Containers') {
             steps {
-                sh 'docker build -t quicknotes-app .'
+                sh 'docker-compose down || true'
             }
         }
 
-        stage('Remove Old Container') {
+        stage('Run Docker Compose') {
             steps {
-                sh 'docker rm -f quicknotes-container || true'
-            }
-        }
-
-        stage('Run Container') {
-            steps {
-                sh 'docker run -d -p 5000:5000 --name quicknotes-container quicknotes-app'
+                sh 'docker-compose up -d --build'
             }
         }
     }
